@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: comercial
+    description: "Dados brutos de origem do ecossistema Adventure Works."
+    database: adventure_works
+    schema: aw_schema
+    tables:
+      - name: person_address
+        description: "Registro de endereços de clientes, funcionários e fornecedores."
+
+      - name: person_countryregion
+        description: "Tabela de referência para países e regiões."
+
+      - name: person_person
+        description: "Registro central de pessoas (clientes individuais, contactos de empresas e funcionários)."
+
+      - name: person_stateprovince
+        description: "Tabela de referência para estados e províncias associadas a países."
+
+      - name: production_product
+        description: "Catálogo de produtos fabricados e vendidos pela empresa."
+
+      - name: sales_creditcard
+        description: "Informações e dados das cartões de crédito associados às vendas."
+
+      - name: sales_customer
+        description: "Registo de clientes da loja física ou e-commerce."
+
+      - name: sales_salesorderheader
+        description: "Cabeçalho dos pedidos de venda com informações gerais do pedido (valores, datas e status)."
+
+      - name: sales_salesorderheadersalesreason
+        description: "Mapeamento entre os pedidos de venda e os respetivos motivos de venda."
+
+      - name: sales_salesreason
+        description: "Tabela com as razões/motivos pelos quais as vendas foram realizadas."
