@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: dim_cliente
+    description: "Dimensão de clientes combinando dados de pessoa e cliente."
+    columns:
+      - name: cliente_id
+        description: "Chave primária do cliente."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_produto
+    description: "Dimensão dos produtos comercializados."
+    columns:
+      - name: produto_id
+        description: "Chave primária do produto."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_cartao
+    description: "Dimensão dos cartões de crédito utilizados nas transações."
+    columns:
+      - name: cartao_id
+        description: "Chave primária do cartão de crédito."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_localidade
+    description: "Dimensão geográfica dos endereços dos clientes."
+    columns:
+      - name: id_localidade
+        description: "Chave primária do endereço/localidade."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_motivo_venda
+    description: "Dimensão dos motivos de venda das ordens."
+
+  - name: dim_data
+    description: "Dimensão de datas extraída a partir das ordens de venda."
+    columns:
+      - name: data_id
+        description: "Chave de data no formato yyyyMMdd."
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_vendas
+    description: "Tabela fato agregando o histórico de ordens de venda e métricas financeiras."
+    columns:
+      - name: pedido_id
+        description: "Identificador único da ordem de venda."
+        tests:
+          - not_null
+      - name: FK_cliente_id
+        description: "Chave estrangeira apontando para dim_cliente."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_cliente')
+                field: cliente_id
+      - name: FK_cartao
+        description: "Chave estrangeira apontando para dim_cartao."
+      - name: FK_localidade
+        description: "Chave estrangeira apontando para dim_localidade."
+      - name: FK_data
+        description: "Chave estrangeira apontando para dim_data."
