@@ -3,9 +3,13 @@ with sales_header as (
     from {{ ref('stg_sales_salesorderheader') }}
 ),
 
-int_motivo as (
-    select *
+int_motivo_dedup as (
+    -- Deduplica os motivos por pedido para evitar a duplicação de métricas financeiras
+    select
+        pedido_id,
+        min(motivo_venda_id) as motivo_venda_id
     from {{ ref('int_motivo_venda') }}
+    group by pedido_id
 )
 
 select
@@ -20,5 +24,5 @@ select
     v.Freight as frete,
     v.TotalDue as total_geral
 from sales_header v
-left join int_motivo m
+left join int_motivo_dedup m
     on v.SalesOrderID = m.pedido_id
