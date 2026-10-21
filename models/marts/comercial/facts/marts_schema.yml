@@ -13,7 +13,7 @@ models:
   - name: dim_produto
     description: "Dimensão dos produtos comercializados."
     columns:
-      - name: produto_id
+      - name: productid
         description: "Chave primária do produto."
         tests:
           - unique
@@ -22,7 +22,7 @@ models:
   - name: dim_cartao
     description: "Dimensão dos cartões de crédito utilizados nas transações."
     columns:
-      - name: cartao_id
+      - name: pk_creditcard
         description: "Chave primária do cartão de crédito."
         tests:
           - unique
@@ -43,7 +43,7 @@ models:
   - name: dim_data
     description: "Dimensão de datas extraída a partir das ordens de venda."
     columns:
-      - name: data_id
+      - name: fk_data
         description: "Chave de data no formato yyyyMMdd."
         tests:
           - unique

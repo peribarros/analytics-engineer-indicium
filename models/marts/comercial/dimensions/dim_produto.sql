@@ -1,17 +1,12 @@
-with address as (
-    select * from {{ ref('stg_person_address') }}
-),
-stateprovince as (
-    select * from {{ ref('stg_person_stateprovince') }}
-),
-countryregion as (
-    select * from {{ ref('stg_person_countryregion') }}
+with products as (
+    select * from {{ ref('stg_production_product') }}
 )
-select
-    address.pk_address,
-    address.cidade_endereco,
-    stateprovince.nome_estado_provincia,
-    countryregion.pais_nome
-from address
-left join stateprovince on address.fk_stateprovince = stateprovince.pk_stateprovince
-left join countryregion on stateprovince.fk_countryregioncode = countryregion.pk_countryregioncode
+
+select 
+    products.pk_product as productid,
+    products.nome_produto,
+    products.numero_produto,
+    products.cor_produto,
+    products.preco_lista_produto,
+    products.custo_padrao_produto
+from products
