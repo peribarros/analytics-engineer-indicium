@@ -5,7 +5,7 @@ person as (
     select * from {{ ref('stg_person_person') }}
 )
 select 
-    cliente.pk_customer as customerid,
+    cliente.pk_customer as cliente_id,
     cliente.fk_person,
     person.pk_businessentity,
     person.nome_completo_pessoa,

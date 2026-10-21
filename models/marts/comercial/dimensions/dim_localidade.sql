@@ -8,7 +8,7 @@ countryregion as (
     select * from {{ ref('stg_person_countryregion') }}
 )
 select 
-    address.pk_address as addressid,
+    address.pk_address as id_localidade,
     address.cidade_endereco,
     stateprovince.pk_stateprovince,
     stateprovince.nome_estado_provincia,
