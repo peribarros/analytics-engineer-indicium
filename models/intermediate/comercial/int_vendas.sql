@@ -4,14 +4,14 @@ with sales_header as (
 )
 
 select
-    SalesOrderID as pedido_id,
-    CustomerID as cliente_id,
-    CreditCardID as cartao_id,
-    ShipToAddressID as localidade_id,
-    OrderDate as data_pedido,
-    Status as status_pedido,
-    SubTotal as subtotal,
-    TaxAmt as impostos,
-    Freight as frete,
-    TotalDue as total_geral
+    sales_header.pk_salesorder as pedido_id,
+    sales_header.fk_customer as cliente_id,
+    sales_header.fk_creditcard as cartao_id,
+    sales_header.fk_shiptoaddress as localidade_id,
+    sales_header.data_pedido,
+    sales_header.status_pedido,
+    sales_header.subtotal,
+    sales_header.valor_imposto as impostos,
+    sales_header.frete,
+    sales_header.total_geral
 from sales_header
