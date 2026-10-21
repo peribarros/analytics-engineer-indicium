@@ -25,7 +25,7 @@ models:
   analytics_engineer_indicium:
     staging:
       +schema: staging
-      comercial:
+      comercial_aw_schema:
         +materialized: view
     intermediate:
       +schema: intermediate
@@ -35,3 +35,8 @@ models:
       +schema: marts
       comercial:
         +materialized: table
+
+# Configuring seeds
+seeds:
+  analytics_engineer_indicium:
+    +schema: seeds

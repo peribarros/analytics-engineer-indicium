@@ -1,13 +1,19 @@
-with int_localidade as (
-    select *
-    from {{ ref('int_localidade') }}
+with address as (
+    select * from {{ ref('stg_person_address') }}
+),
+stateprovince as (
+    select * from {{ ref('stg_person_stateprovince') }}
+),
+countryregion as (
+    select * from {{ ref('stg_person_countryregion') }}
 )
-
-select
-    id_localidade,
-    cidade,
-    estado,
-    nome_estado,
-    pais,
-    nome_pais
-from int_localidade
+select 
+    address.pk_address as addressid,
+    address.cidade_endereco,
+    stateprovince.pk_stateprovince,
+    stateprovince.nome_estado_provincia,
+    countryregion.pk_countryregioncode,
+    countryregion.pais_nome
+from address
+left join stateprovince on address.fk_stateprovince = stateprovince.pk_stateprovince
+left join countryregion on stateprovince.fk_countryregioncode = countryregion.pk_countryregioncode

@@ -4,7 +4,14 @@ sources:
   - name: comercial
     description: "Dados brutos de origem do ecossistema Adventure Works."
     database: adventure_works
-    schema: aw_schema
+    schema: comercial_aw_schema
+    
+    # Configuração de freshness movida para dentro de config: (resolve o aviso de depreciação)
+    config:
+      freshness:
+        warn_after: {count: 12, period: hour}
+        error_after: {count: 24, period: hour}
+    
     tables:
       - name: person_address
         description: "Registro de endereços de clientes, funcionários e fornecedores."
