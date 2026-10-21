@@ -1,13 +1,11 @@
-with date_spine as (
-    select distinct cast(OrderDate as date) as data
-    from {{ ref('stg_sales_salesorderheader') }}
+with sales as ({# se aplica à tabela de pedidos #}
+    select * from {{ ref('stg_sales_salesorderheader') }}
 )
-
-select
-    date_format(data, 'yyyyMMdd') as data_id,
-    data as full_date,
-    day(data) as dia,
-    month(data) as mes,
-    year(data) as ano,
-    date_format(data, 'yyyy-MM') as ano_mes
-from date_spine
+select distinct
+    date_format(cast(data_pedido as date), 'yyyyMMdd') as fk_data,
+    cast(data_pedido as date) as data,
+    year(data_pedido) as ano,
+    month(data_pedido) as mes,
+    day(data_pedido) as dia
+from sales
+where data_pedido is not null

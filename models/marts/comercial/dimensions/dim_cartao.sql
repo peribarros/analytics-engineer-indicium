@@ -1,9 +1,10 @@
-with stg_creditcard as (
-    select *
-    from {{ ref('stg_sales_creditcard') }}
+with cartao as (
+    select * from {{ ref('stg_sales_creditcard') }}
 )
-
 select
-    CreditCardID as cartao_id,
-    CardType as tipo_cartao
-from stg_creditcard
+    pk_creditcard,
+    tipo_cartao,
+    numero_cartao,
+    mes_expiracao_cartao,
+    ano_expiracao_cartao
+from cartao
