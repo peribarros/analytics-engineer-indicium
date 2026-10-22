@@ -25,14 +25,17 @@ models:
   analytics_engineer_indicium:
     staging:
       +schema: staging
-      comercial_aw_schema:
+      +materialized: view
+      comercial:
         +materialized: view
     intermediate:
       +schema: intermediate
+      +materialized: view
       comercial:
-        +materialized: ephemeral
+        +materialized: view
     marts:
       +schema: marts
+      +materialized: table
       comercial:
         +materialized: table
 
@@ -40,3 +43,4 @@ models:
 seeds:
   analytics_engineer_indicium:
     +schema: seeds
+    +enabled: false
