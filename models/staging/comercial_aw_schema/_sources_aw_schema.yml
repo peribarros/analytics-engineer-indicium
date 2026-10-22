@@ -6,11 +6,11 @@ sources:
     database: adventure_works
     schema: comercial_aw_schema
     
-    # teste de freshness 
+    # Teste de freshness (latência dos dados brutos)
     config:
       freshness:
-        warn_after: {count: 12, period: hour}
-        error_after: {count: 24, period: hour}
+        warn_after: {count: 12, period: hour}  # Alerta se os dados brutos não mudarem há mais de 12h
+        error_after: {count: 24, period: hour} # Erro se ultrapassarem 24h sem atualização na origem
     
     tables:
       - name: person_address
@@ -19,8 +19,8 @@ sources:
           - name: addressid
             description: "Chave primária da tabela de endereços."
             data_tests:
-              - unique
-              - not_null
+              - unique    # Valida unicidade na fonte bruta
+              - not_null  # Valida ausência de nulos na fonte bruta
 
       - name: person_countryregion
         description: "Tabela de referência para países e regiões."
@@ -57,6 +57,13 @@ sources:
             data_tests:
               - unique
               - not_null
+          - name: standardcost
+            description: "Custo padrão de fabricação do produto."
+            data_tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  arguments:
+                    min_value: 0
+                    max_value: 999999  # Garante que o custo padrão não pode ser negativo
 
       - name: sales_creditcard
         description: "Informações e dados das cartões de crédito associados às vendas."
@@ -84,6 +91,18 @@ sources:
             data_tests:
               - unique
               - not_null
+          - name: status
+            description: "Estado do pedido de venda (1=Em processamento, 2=Aprovado, 3=Em espera, 4=Rejeitado, 5=Enviado, 6=Cancelado)."
+            data_tests:
+              - accepted_values:
+                  values: [1, 2, 3, 4, 5, 6]  # Restringe estritamente aos códigos de status válidos do ERP
+          - name: totaldue
+            description: "Valor total devido do pedido."
+            data_tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  arguments:
+                    min_value: 0
+                    max_value: 99999999  # Garante que o valor total devido não possui montantes negativos
 
       - name: sales_salesorderheadersalesreason
         description: "Mapeamento entre os pedidos de venda e os respetivos motivos de venda."

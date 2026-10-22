@@ -7,8 +7,8 @@ models:
       - name: cliente_id
         description: "Chave primária do cliente."
         tests:
-          - unique
-          - not_null
+          - unique    # Garante que não existem IDs de cliente duplicados
+          - not_null  # Garante que a chave primária nunca possui valores nulos
 
   - name: dim_produto
     description: "Dimensão dos produtos comercializados."
@@ -16,8 +16,15 @@ models:
       - name: productid
         description: "Chave primária do produto."
         tests:
-          - unique
-          - not_null
+          - unique    # Garante unicidade do ID do produto
+          - not_null  # Garante ausência de nulos na chave primária
+      - name: preco_lista_produto
+        description: "Preço de lista do produto."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 999999  # Garante que o preço de lista nunca é negativo (com teto máximo razoável)
 
   - name: dim_cartao
     description: "Dimensão dos cartões de crédito utilizados nas transações."
@@ -25,8 +32,8 @@ models:
       - name: pk_creditcard
         description: "Chave primária do cartão de crédito."
         tests:
-          - unique
-          - not_null
+          - unique    # Garante que cada cartão é único na dimensão
+          - not_null  # Garante que a chave primária não é nula
 
   - name: dim_localidade
     description: "Dimensão geográfica dos endereços dos clientes."
@@ -34,8 +41,8 @@ models:
       - name: id_localidade
         description: "Chave primária do endereço/localidade."
         tests:
-          - unique
-          - not_null
+          - unique    # Garante que não há IDs de localidade duplicados
+          - not_null  # Garante que o ID de localidade está sempre preenchido
 
   - name: dim_motivo_venda
     description: "Dimensão dos motivos de venda das ordens."
@@ -46,8 +53,8 @@ models:
       - name: fk_data
         description: "Chave de data no formato yyyyMMdd."
         tests:
-          - unique
-          - not_null
+          - unique    # Garante que cada data/chave é única
+          - not_null  # Garante ausência de datas nulas
 
   - name: fct_vendas
     description: "Tabela fato agregando o histórico de ordens de venda e métricas financeiras."
@@ -55,14 +62,14 @@ models:
       - name: pedido_id
         description: "Identificador único da ordem de venda."
         tests:
-          - not_null
+          - not_null  # Garante que todos os pedidos na fato têm um ID válido
       - name: FK_cliente_id
         description: "Chave estrangeira apontando para dim_cliente."
         tests:
           - relationships:
               arguments:
                 to: ref('dim_cliente')
-                field: cliente_id
+                field: cliente_id  # Valida integridade referencial: todo cliente referenciado na fato deve existir na dim_cliente
       - name: FK_cartao
         description: "Chave estrangeira apontando para dim_cartao."
       - name: FK_localidade
