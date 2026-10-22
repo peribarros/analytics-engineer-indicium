@@ -95,7 +95,8 @@ sources:
             description: "Estado do pedido de venda (1=Em processamento, 2=Aprovado, 3=Em espera, 4=Rejeitado, 5=Enviado, 6=Cancelado)."
             data_tests:
               - accepted_values:
-                  values: [1, 2, 3, 4, 5, 6]  # Restringe estritamente aos códigos de status válidos do ERP
+                  arguments:
+                    values: [1, 2, 3, 4, 5, 6]  # Formato correto com arguments
           - name: totaldue
             description: "Valor total devido do pedido."
             data_tests:
