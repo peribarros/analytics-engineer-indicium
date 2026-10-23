@@ -125,3 +125,20 @@ sources:
             data_tests:
               - unique
               - not_null
+
+      - name: sales_salesorderdetail
+        description: "Detalhes dos itens de cada pedido de venda (produtos, quantidades e valores)."
+        columns:
+          - name: salesorderid
+            description: "Identificador do pedido de venda."
+            data_tests:
+              - not_null
+          - name: salesorderdetailid
+            description: "Identificador único do detalhe/item do pedido."
+            data_tests:
+              - unique
+              - not_null
+          - name: productid
+            description: "Identificador do produto associado ao item."
+            data_tests:
+              - not_null
