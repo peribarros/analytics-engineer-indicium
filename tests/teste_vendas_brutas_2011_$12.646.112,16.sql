@@ -3,13 +3,22 @@
 */
 
 with
+    vendas_por_pedido as (
+        select
+            pedido_id,
+            max(fk_data) as fk_data,
+            max(subtotal) as subtotal
+        from {{ ref('fct_vendas') }}
+        group by pedido_id
+    ),
+    
     vendas_por_ano as (
         select
             floor(d.fk_data / 10000) as ano,
-            sum(f.subtotal) as total_vendas
-        from {{ ref('fct_vendas') }} f
+            sum(v.subtotal) as total_vendas
+        from vendas_por_pedido v
         inner join {{ ref('dim_data') }} d 
-            on f.FK_data = d.fk_data
+            on v.fk_data = d.fk_data
         group by 1
     )
 

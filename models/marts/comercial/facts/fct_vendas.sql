@@ -1,22 +1,15 @@
-with header_reasons as (
-    select * from {{ ref('stg_sales_salesorderheadersalesreason') }}
+with sales_details as (
+    select * from {{ ref('stg_sales_salesorderdetail') }}
 ),
-reasons as (
-    select * from {{ ref('stg_sales_salesreason') }}
+
+int_vendas as (
+    select * from {{ ref('int_vendas') }}
 ),
+
 int_motivo_venda as (
-    select
-        header_reasons.fk_salesorder as pedido_id,
-        reasons.pk_salesreason as motivo_venda_id,
-        reasons.nome_motivo,
-        reasons.tipo_motivo
-    from header_reasons
-    left join reasons
-        on header_reasons.fk_salesreason = reasons.pk_salesreason
+    select * from {{ ref('int_motivo_venda') }}
 ),
-sales_header as (
-    select * from {{ ref('stg_sales_salesorderheader') }}
-),
+
 int_motivo_dedup as (
     select
         pedido_id,
@@ -24,17 +17,28 @@ int_motivo_dedup as (
     from int_motivo_venda
     group by pedido_id
 )
+
 select
-    sales_header.pk_salesorder as pedido_id,
-    sales_header.fk_customer as FK_cliente_id,
-    sales_header.fk_creditcard as FK_cartao,
-    sales_header.fk_shiptoaddress as FK_localidade,
-    int_motivo_dedup.motivo_venda_id as FK_motivo_venda_id,
-    date_format(cast(sales_header.data_pedido as date), 'yyyyMMdd') as FK_data,
-    sales_header.subtotal,
-    sales_header.valor_imposto as impostos,
-    sales_header.frete as frete,
-    sales_header.total_geral
-from sales_header
+    sales_details.salesorderid as pedido_id,
+    sales_details.productid as fk_produto,          -- Chave essencial para ligar à dim_produto
+    int_vendas.fk_cliente_id,
+    int_vendas.fk_cartao,
+    int_vendas.fk_localidade,
+    int_motivo_dedup.motivo_venda_id as fk_motivo_venda_id,
+    int_vendas.fk_data,
+    
+    -- Métricas ao nível do item
+    sales_details.quantidade as quantidade_comprada,
+    sales_details.unitprice as preco_unitario,
+    sales_details.linetotal as valor_total_negociado_produto,
+    
+    -- Métricas de contexto do cabeçalho
+    int_vendas.subtotal,
+    int_vendas.impostos,
+    int_vendas.frete,
+    int_vendas.total_geral
+from sales_details
+inner join int_vendas
+    on sales_details.salesorderid = int_vendas.pedido_id
 left join int_motivo_dedup
-    on sales_header.pk_salesorder = int_motivo_dedup.pedido_id
+    on sales_details.salesorderid = int_motivo_dedup.pedido_id
