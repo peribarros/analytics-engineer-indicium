@@ -6,7 +6,7 @@ sources:
     database: adventure_works
     schema: comercial_aw_schema
     
-    # Teste de freshness (latência dos dados brutos)
+    # Teste de freshness 
     config:
       freshness:
         warn_after: {count: 12, period: hour}  # Alerta se os dados brutos não mudarem há mais de 12h
@@ -19,8 +19,8 @@ sources:
           - name: addressid
             description: "Chave primária da tabela de endereços."
             data_tests:
-              - unique    # Valida unicidade na fonte bruta
-              - not_null  # Valida ausência de nulos na fonte bruta
+              - unique   
+              - not_null  
 
       - name: person_countryregion
         description: "Tabela de referência para países e regiões."

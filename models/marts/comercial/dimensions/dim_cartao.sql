@@ -13,7 +13,7 @@ cartao_tratado as (
     from cartao
 ),
 
--- Inserir explicitamente a linha 0 para corresponder ao COALESCE da tabela de factos
+-- Inserir explicitamente a linha 0 para corresponder ao COALESCE da tabela de fato
 cartao_com_padrao as (
     select 
         0 as pk_creditcard,
