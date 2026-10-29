@@ -1,4 +1,4 @@
-with sales as ({# se aplica à tabela de pedidos #}
+with sales as (
     select * from {{ ref('stg_sales_salesorderheader') }}
 )
 select distinct

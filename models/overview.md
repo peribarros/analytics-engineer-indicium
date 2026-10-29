@@ -1,20 +1,20 @@
 {% docs __overview__ %}
 
-# Bem-vindo à Documentação do Projeto dbt - Adventure Works (Comercial)
+# Bem-vindo à documentação do projeto da Adventure Works
 
-Este projeto dbt foi desenvolvido com foco em Engenharia de Analytics utilizando dados do ecossistema **Adventure Works** no ambiente **Databricks SQL**, seguindo uma arquitetura modular moderna dividida entre as camadas de **Staging** e **Marts**.
+Este projeto dbt foi desenvolvido com foco em Engenharia de Analytics utilizando dados do ecossistema Adventure Works no ambiente Databricks SQL, seguindo uma arquitetura modular moderna dividida entre as camadas de Staging e Marts.
 
 ---
 
-## 🏗️ Arquitetura do Projeto
+## Arquitetura do Projeto
 
 O fluxo de dados segue uma estruturação limpa e padronizada:
-1. **Staging (`stg`)**: Conexão direta com as fontes brutas (`sources`), aplicando padronização de nomenclatura (totalmente em português), tipagem explícita de colunas e limpeza inicial dos dados.
-2. **Marts**: Camada de consumo estruturada em formato de **Star Schema** (Esquema Estrela), contendo dimensões consolidadas e tabelas fato otimizadas para análises comerciais.
+1. Staging (`stg`): Conexão direta com as fontes brutas (`sources`), aplicando padronização de nomenclatura (totalmente em português), tipagem explícita de colunas e limpeza inicial dos dados.
+2. Marts: Camada de consumo estruturada em formato de Star Schema (Esquema Estrela), contendo dimensões consolidadas e tabelas fato otimizadas para análises comerciais.
 
 ---
 
-## 📊 Modelos Principais
+## Modelos Principais
 
 ### Dimensões
 * **`dim_cliente`**: Combina dados de clientes e pessoas físicas/jurídicas.
@@ -29,16 +29,16 @@ O fluxo de dados segue uma estruturação limpa e padronizada:
 
 ---
 
-## 🔍 Testes e Qualidade de Dados
+## Testes e Qualidade de Dados
 O projeto implementa rigorosos testes de qualidade integrados no dbt, incluindo:
 * Validações de **unicidade** (`unique`) e **não-nulos** (`not_null`) nas chaves primárias.
 * Testes de integridade referencial (`relationships`) entre as tabelas fato e dimensões.
 
 ---
 
-## 🚀 Navegação e Execução
-* Utilize a aba **Project** à esquerda para inspecionar a árvore de diretórios e modelos.
-* Utilize a aba **Database** para explorar as tabelas geradas diretamente no Databricks.
+## Navegação e Execução
+* Utilize a aba Project à esquerda para inspecionar a árvore de diretórios e modelos.
+* Utilize a aba Database para explorar as tabelas geradas diretamente no Databricks.
 * Para rodar e validar o projeto localmente, utilize:
   * `dbt run`: Para compilar e executar os modelos.
   * `dbt build`: Para executar os modelos e validar todos os testes em sequência.
