@@ -1,16 +1,16 @@
 with header_reasons as (
-    select *
+    select * 
     from {{ ref('stg_sales_salesorderheadersalesreason') }}
 ),
 
 reasons as (
-    select *
+    select * 
     from {{ ref('stg_sales_salesreason') }}
 )
 
 select
     header_reasons.fk_salesorder as pedido_id,
-    header_reasons.fk_salesreason as motivo_venda_id,
+    reasons.pk_salesreason as motivo_venda_id,
     reasons.nome_motivo,
     reasons.tipo_motivo
 from header_reasons

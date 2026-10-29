@@ -12,7 +12,6 @@ renamed as (
         specialofferid,
         unitprice,
         unitpricediscount,
-        -- Calcula o total da linha multiplicando a quantidade pelo preço unitário (com desconto, se aplicável)
         (orderqty * unitprice) as linetotal,
         rowguid,
         modifieddate

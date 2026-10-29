@@ -10,7 +10,7 @@ renomeado as (
         , addressline2 as endereco_2
         , city as cidade_endereco
         , cast(stateprovinceid as int) as fk_stateprovince
-        -- Padronização com regex para limpar espaços extras ou garantir o formato correto de letras e números do código postal
+        -- Padronização com regex do código postal
         , trim(regexp_replace(postalcode, '[^a-zA-Z0-9\\s-]', '')) as codigo_postal
         , spatiallocation as localizacao_espacial_endereco
         , rowguid

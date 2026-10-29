@@ -20,12 +20,16 @@ int_motivo_dedup as (
 
 select
     sales_details.salesorderid as pedido_id,
-    sales_details.productid as fk_produto,          -- Chave essencial para ligar à dim_produto
+    sales_details.productid as fk_produto,    
     int_vendas.fk_cliente_id,
     int_vendas.fk_cartao,
     int_vendas.fk_localidade,
+    
+    -- Mantém o valor original da fonte (NULL para pedidos sem motivo mapeado)
     int_motivo_dedup.motivo_venda_id as fk_motivo_venda_id,
+    
     int_vendas.fk_data,
+    int_vendas.status,
     
     -- Métricas ao nível do item
     sales_details.quantidade as quantidade_comprada,

@@ -8,7 +8,11 @@ select
     cliente.pk_customer as cliente_id,
     cliente.fk_person,
     person.pk_businessentity,
-    person.nome_completo_pessoa,
+    -- Substitui NULLs e textos vazios por "Não informado / Pessoa Jurídica"
+    coalesce(
+        nullif(trim(person.nome_completo_pessoa), ''), 
+        'Cliente Não Identificado'
+    ) as nome_completo_pessoa,
     person.tipo_pessoa
 from cliente
 left join person on cliente.fk_person = person.pk_businessentity
