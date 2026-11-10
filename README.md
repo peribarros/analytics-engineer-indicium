@@ -38,51 +38,50 @@ PostgreSQL (OLTP) > ELT / Delta Lake: Databricks > dbt Cloud - Staging ➔ Marts
 ## Modelagem Conceitual (Star Schema)
 O Data Warehouse foi modelado em formato estrela (Star Schema), centrado na tabela fato de itens de pedido (fct_sales), rodeada pelas dimensões essenciais para responder às perguntas de negócio:
 
-fct_sales: Grão ao nível de item de pedido (salesorderdetailid), contendo métricas calculadas de Faturamento Bruto, Descontos e Faturamento Líquido.
-dim_products: Catálogo de produtos, categorias e subcategorias.
-dim_customers: Dados consolidados de clientes e pessoas.
-dim_territories: Localização geográfica detalhada (cidade, estado e país).
-dim_sales_reasons: Motivos associados às vendas (incluindo o mapeamento do canal B2B).
+* fct_sales: Grão ao nível de item de pedido (salesorderdetailid), contendo métricas calculadas de Faturamento Bruto, Descontos e Faturamento Líquido.
+* dim_products: Catálogo de produtos, categorias e subcategorias.
+* dim_customers: Dados consolidados de clientes e pessoas.
+* dim_territories: Localização geográfica detalhada (cidade, estado e país).
+* dim_sales_reasons: Motivos associados às vendas (incluindo o mapeamento do canal B2B).
 
 ## Transformação de Dados & Qualidade (dbt)
 O projeto utiliza o dbt para modularizar as transformações em camadas (staging, intermediate, marts), garantindo testes automatizados rigorosos:
 
-Testes de Source: Validação de integridade e frescura dos dados brutos (dbt test --select source:*).
-Testes de Primary Keys: Assegurando unicidade e não-nulidade (unique, not_null) em todas as dimensões e fatos.
-Teste de Dados do CEO (Customizado): Implementação de um teste singular em SQL (assert_gross_sales_2011.sql) para validar a exatidão contábil de 2011 ($12.646.112,16).
-Tags Estratégicas: Organização por tags (staging, marts) para execuções parciais eficientes (dbt run).
+* Testes de Source: Validação de integridade e frescura dos dados brutos (dbt test --select source:*).
+* Testes de Primary Keys: Assegurando unicidade e não-nulidade (unique, not_null) em todas as dimensões e fatos.
+* Teste de Dados do CEO (Customizado): Implementação de um teste singular em SQL (assert_gross_sales_2011.sql) para validar a exatidão contábil de 2011 ($12.646.112,16).
+* Tags Estratégicas: Organização por tags (staging, marts) para execuções parciais eficientes (dbt run).
 
 ## Comandos principais executados no pipeline:
 
-Bash
-dbt test --select source:*
-dbt run
-dbt test
+* dbt test --select source:*
+* dbt run
+* dbt test
 
 ## Painel de BI & Respostas de Negócio
 O dashboard interativo no Power BI foi estruturado para responder com precisão cirúrgica às exigências da diretoria:
 
-Item 5-b/e/f: Série temporal consolidada de pedidos, quantidades e faturamento total.
-Item 5-c: Análise de Ticket Médio por mês, ano e região geográfica.
-Item 5-d: Ranking dos Top 10 Clientes por valor negociado.
-Item 5-e: As Top 5 Cidades em volume de faturamento.
-Item 5-g: O produto com maior volume de vendas sob o motivo "Promotion" é o "AWC Logo Cap" (com 2.048 unidades).
-Item 5-h (Insights): Desmistificação dos nulos no motivo de venda, comprovando que representam contas corporativas B2B estratégicas para o crescimento da receita sem queima de margem em promoções.
+* Item 5-b/e/f: Série temporal consolidada de pedidos, quantidades e faturamento total.
+* Item 5-c: Análise de Ticket Médio por mês, ano e região geográfica.
+* Item 5-d: Ranking dos Top 10 Clientes por valor negociado.
+* Item 5-e: As Top 5 Cidades em volume de faturamento.
+* Item 5-g: O produto com maior volume de vendas sob o motivo "Promotion" é o "AWC Logo Cap" (com 2.048 unidades).
+* Item 5-h (Insights): Desmistificação dos nulos no motivo de venda, comprovando que representam contas corporativas B2B estratégicas para o crescimento da receita sem queima de margem em promoções.
 
 ## Governança, FinOps & Planejamento
 
-Governança de Dados: Aplicação de boas práticas de mascaramento de dados sensíveis (PII hash SHA-256), controle de acesso baseado em papéis (RBAC) via Unity Catalog, e linhagem de dados transparente.
-Relatório FinOps: Monitoramento de custos de computação na nuvem, otimização de tamanhos de instâncias de clusters do Databricks e políticas de auto-suspensão para evitar desperdício orçamentário.
-Planejamento Ágil (Scrum): Cronograma estruturado em Sprints divididas entre alinhamento com stakeholders (João Muller, Carlos Silveira, Silvana Teixeira e Nilson Ramos), modelagem, testes e entrega final.
+* Governança de Dados: Aplicação de boas práticas de mascaramento de dados sensíveis (PII hash SHA-256), controle de acesso baseado em papéis (RBAC) via Unity Catalog, e linhagem de dados transparente.
+* Relatório FinOps: Monitoramento de custos de computação na nuvem, otimização de tamanhos de instâncias de clusters do Databricks e políticas de auto-suspensão para evitar desperdício orçamentário.
+* Planejamento Ágil (Scrum): Cronograma estruturado em Sprints divididas entre alinhamento com stakeholders (João Muller, Carlos Silveira, Silvana Teixeira e Nilson Ramos), modelagem, testes e entrega final.
 
 ## Estrutura do Repositório
-Plaintext
-├── models/
-│   ├── staging/         # Modelos stg_* (limpeza e padronização inicial)
-│   ├── intermediate/    # Regras de negócio intermediárias e joins lógicos
-│   └── marts/           # Tabelas finais dim_* e fct_* (Star Schema)
-├── tests/               # Testes singulares (ex: validação contábil do CEO Carlos)
-├── analyses/            # Consultas ad-hoc e validações exploratórias
-├── dbt_project.yml      # Configurações globais do projeto dbt
-└── README.md            # Documentação oficial do projeto
+
+* models/
+  * staging/# Modelos stg_* (limpeza e padronização inicial)
+  * intermediate/# Regras de negócio intermediárias e joins lógicos
+  * marts/# Tabelas finais dim_* e fct_* (Star Schema)
+* tests/# Testes singulares (ex: validação contábil do CEO Carlos)
+* analyses/# Consultas ad-hoc e validações exploratórias
+* dbt_project.yml# Configurações globais do projeto dbt
+*README.md# Documentação oficial do projeto
 
